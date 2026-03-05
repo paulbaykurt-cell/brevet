@@ -585,180 +585,112 @@ function LongMode({ subject, onBack }) {
 }
 
 
-// ── Device Picker ─────────────────────────────────────────────────────────
+// ── Main App ───────────────────────────────────────────────────────────────
 
-const DEVICES = [
-  { id: "mobile", label: "Téléphone", icon: "📱", desc: "Petit écran" },
-  { id: "tablet", label: "Tablette", icon: "📟", desc: "Écran moyen" },
-  { id: "desktop", label: "Ordinateur", icon: "🖥️", desc: "Grand écran" },
-];
-
-const deviceCss = `
-  .device-screen {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 32px 16px;
-    position: relative;
-    z-index: 1;
-  }
-  .device-title {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(26px, 5vw, 40px);
-    font-weight: 800;
-    text-align: center;
-    margin-bottom: 10px;
-  }
-  .device-subtitle {
-    color: rgba(255,255,255,0.45);
-    text-align: center;
-    font-size: 15px;
-    margin-bottom: 40px;
-  }
-  .device-grid {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    justify-content: center;
-    max-width: 600px;
-  }
-  .device-card {
-    background: rgba(255,255,255,0.05);
-    border: 1.5px solid rgba(255,255,255,0.1);
-    border-radius: 20px;
-    padding: 32px 28px;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.2s ease;
-    min-width: 140px;
-    flex: 1;
-    box-shadow: 0 4px 0 rgba(0,0,0,0.3);
-  }
-  .device-card:hover {
-    background: rgba(255,255,255,0.1);
-    border-color: #F59E0B;
-    transform: translateY(-4px);
-    box-shadow: 0 8px 0 rgba(0,0,0,0.3);
-  }
-  .device-card:active {
-    transform: translateY(4px);
-    box-shadow: 0 0px 0 rgba(0,0,0,0.3);
-  }
-  .device-card-icon { font-size: 40px; margin-bottom: 12px; }
-  .device-card-label { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; }
-  .device-card-desc { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 4px; }
-
-  /* Desktop layout */
-  .desktop-layout {
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 28px;
+const responsiveCss = `
+  /* Layout de base (mobile) */
+  .layout {
     width: 100%;
-    max-width: 1100px;
-    min-height: 100vh;
-    padding: 32px 28px;
+    max-width: 680px;
+    padding: 24px 16px 48px;
     position: relative;
     z-index: 1;
-    align-items: start;
   }
-  .desktop-sidebar { position: sticky; top: 32px; }
-  .desktop-sidebar .header { text-align: left; margin-bottom: 20px; }
-  .desktop-sidebar .header h1 { font-size: 30px; }
-  .desktop-main { min-width: 0; }
-  .desktop-subject-grid {
+
+  .subject-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-    margin-bottom: 8px;
-  }
-  .desktop-subject-card {
-    background: rgba(255,255,255,0.05);
-    border: 1.5px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
-    padding: 10px 12px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: all 0.15s ease;
-    box-shadow: 0 3px 0 rgba(0,0,0,0.3);
-  }
-  .desktop-subject-card:hover { background: rgba(255,255,255,0.09); transform: translateY(-2px); box-shadow: 0 5px 0 rgba(0,0,0,0.3); }
-  .desktop-subject-card:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,0.3); }
-  .desktop-subject-card.selected { border-width: 2px; }
-  .desktop-subject-icon { font-size: 20px; }
-  .desktop-subject-label { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.85); }
-
-  /* Tablet layout */
-  .tablet-layout {
-    width: 100%;
-    max-width: 800px;
-    padding: 24px 20px 48px;
-    position: relative;
-    z-index: 1;
-  }
-  .tablet-subject-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
     gap: 12px;
     margin-bottom: 12px;
   }
 
-  /* Desktop empty state */
-  .desktop-empty {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 65vh;
-    flex-direction: column;
-    gap: 14px;
-    opacity: 0.35;
+  /* Tablette (≥ 640px) */
+  @media (min-width: 640px) {
+    .layout { max-width: 800px; padding: 28px 24px 48px; }
+    .subject-grid { grid-template-columns: repeat(4, 1fr); }
   }
 
-  .change-device-btn {
-    background: none;
-    border: none;
-    color: rgba(255,255,255,0.3);
-    font-size: 12px;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    margin-top: 20px;
-    display: block;
-    transition: color 0.2s;
-    padding: 4px 0;
+  /* Ordinateur (≥ 1024px) */
+  @media (min-width: 1024px) {
+    .layout {
+      display: grid;
+      grid-template-columns: 270px 1fr;
+      gap: 32px;
+      max-width: 1100px;
+      min-height: 100vh;
+      padding: 36px 32px;
+      align-items: start;
+    }
+    .sidebar { position: sticky; top: 36px; }
+    .sidebar .header { text-align: left; margin-bottom: 20px; }
+    .sidebar .header h1 { font-size: 28px; }
+    .main-content { min-width: 0; }
+    .subject-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    .subject-card {
+      padding: 10px 12px;
+      border-radius: 12px;
+      flex-direction: row;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+    }
+    .subject-icon { font-size: 20px; margin-bottom: 0; }
+    .subject-label { font-size: 12px; }
+    .desktop-empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 65vh;
+      flex-direction: column;
+      gap: 14px;
+      opacity: 0.35;
+    }
+    .desktop-subject-banner {
+      display: block;
+      margin-bottom: 20px;
+      padding: 24px;
+      border-radius: 18px;
+    }
+    .hide-on-desktop { display: none; }
+    .show-on-desktop { display: block; }
   }
-  .change-device-btn:hover { color: rgba(255,255,255,0.6); }
+
+  @media (max-width: 1023px) {
+    .sidebar { width: 100%; }
+    .main-content { width: 100%; }
+    .desktop-empty { display: none; }
+    .desktop-subject-banner { display: none; }
+    .hide-on-desktop { display: block; }
+    .show-on-desktop { display: none; }
+  }
 `;
 
-function DevicePicker({ onSelect }) {
-  return (
-    <div className="device-screen">
-      <div className="device-title">Tu es sur quel appareil ? 👋</div>
-      <div className="device-subtitle">L'affichage s'adaptera pour toi</div>
-      <div className="device-grid">
-        {DEVICES.map((d) => (
-          <div key={d.id} className="device-card" onClick={() => onSelect(d.id)}>
-            <div className="device-card-icon">{d.icon}</div>
-            <div className="device-card-label">{d.label}</div>
-            <div className="device-card-desc">{d.desc}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ── Main App ───────────────────────────────────────────────────────────────
-
 export default function App() {
-  const [device, setDevice] = useState(null);
   const [screen, setScreen] = useState("home");
   const [subject, setSubject] = useState(null);
   const [mode, setMode] = useState(null);
 
   const goHome = () => { setScreen("home"); setSubject(null); setMode(null); };
+
+  const SubjectGrid = () => (
+    <div className="subject-grid">
+      {SUBJECTS.map((s) => (
+        <div
+          key={s.id}
+          className={`subject-card${subject?.id === s.id ? " selected" : ""}`}
+          style={subject?.id === s.id ? { borderColor: s.color, background: `${s.color}18` } : {}}
+          onClick={() => { setSubject(s); setMode(null); }}
+        >
+          <div className="subject-icon">{s.icon}</div>
+          <div className="subject-label">{s.label}</div>
+        </div>
+      ))}
+    </div>
+  );
 
   const ModeSection = () => subject ? (
     <>
@@ -788,130 +720,67 @@ export default function App() {
   return (
     <>
       <style>{css}</style>
-      <style>{deviceCss}</style>
+      <style>{responsiveCss}</style>
       <div className="app">
         <div className="blob blob-1" />
         <div className="blob blob-2" />
         <div className="blob blob-3" />
 
-        {/* Écran de sélection d'appareil */}
-        {!device && <DevicePicker onSelect={setDevice} />}
-
-        {/* MOBILE */}
-        {device === "mobile" && (
-          <div className="container">
-            {screen === "home" && (
-              <>
-                <div className="header">
-                  <div className="header-badge">Révision Brevet 3ème</div>
-                  <h1>Prépare ton<br /><span>Brevet</span> 📖</h1>
-                  <p>Questions générées par IA • Programme officiel</p>
-                </div>
-                <div className="section-title">Choisis une matière</div>
-                <div className="subject-grid">
-                  {SUBJECTS.map((s) => (
-                    <div key={s.id} className={`subject-card${subject?.id === s.id ? " selected" : ""}`}
-                      style={subject?.id === s.id ? { borderColor: s.color, background: `${s.color}18` } : {}}
-                      onClick={() => { setSubject(s); setMode(null); }}>
-                      <div className="subject-icon">{s.icon}</div>
-                      <div className="subject-label">{s.label}</div>
-                    </div>
-                  ))}
-                </div>
-                <ModeSection />
-                <button className="change-device-btn" onClick={() => setDevice(null)}>Changer d'appareil</button>
-              </>
-            )}
-            {screen === "quiz" && <QuizMode subject={subject} onBack={goHome} />}
-            {screen === "long" && <LongMode subject={subject} onBack={goHome} />}
-          </div>
-        )}
-
-        {/* TABLETTE */}
-        {device === "tablet" && (
-          <div className="tablet-layout">
-            {screen === "home" && (
-              <>
-                <div className="header">
-                  <div className="header-badge">Révision Brevet 3ème</div>
-                  <h1>Prépare ton<br /><span>Brevet</span> 📖</h1>
-                  <p>Questions générées par IA • Programme officiel</p>
-                </div>
-                <div className="section-title">Choisis une matière</div>
-                <div className="tablet-subject-grid">
-                  {SUBJECTS.map((s) => (
-                    <div key={s.id} className={`subject-card${subject?.id === s.id ? " selected" : ""}`}
-                      style={subject?.id === s.id ? { borderColor: s.color, background: `${s.color}18` } : {}}
-                      onClick={() => { setSubject(s); setMode(null); }}>
-                      <div className="subject-icon">{s.icon}</div>
-                      <div className="subject-label">{s.label}</div>
-                    </div>
-                  ))}
-                </div>
-                <ModeSection />
-                <button className="change-device-btn" onClick={() => setDevice(null)}>Changer d'appareil</button>
-              </>
-            )}
-            {screen === "quiz" && <QuizMode subject={subject} onBack={goHome} />}
-            {screen === "long" && <LongMode subject={subject} onBack={goHome} />}
-          </div>
-        )}
-
-        {/* ORDINATEUR */}
-        {device === "desktop" && (
-          <div className="desktop-layout">
-            {/* Sidebar gauche */}
-            <div className="desktop-sidebar">
-              <div className="header">
-                <div className="header-badge">Brevet 3ème</div>
-                <h1>Prépare<br />ton <span>Brevet</span> 📖</h1>
-                <p style={{ fontSize: 13 }}>IA • Programme DNB officiel</p>
-              </div>
-              {screen === "home" && (
-                <>
-                  <div className="section-title">Matière</div>
-                  <div className="desktop-subject-grid">
-                    {SUBJECTS.map((s) => (
-                      <div key={s.id} className={`desktop-subject-card${subject?.id === s.id ? " selected" : ""}`}
-                        style={subject?.id === s.id ? { borderColor: s.color, background: `${s.color}18` } : {}}
-                        onClick={() => { setSubject(s); setMode(null); }}>
-                        <div className="desktop-subject-icon">{s.icon}</div>
-                        <div className="desktop-subject-label">{s.label}</div>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
-              {screen !== "home" && (
-                <button className="btn btn-ghost" onClick={goHome}>← Retour à l'accueil</button>
-              )}
-              <button className="change-device-btn" onClick={() => setDevice(null)}>Changer d'appareil</button>
+        <div className="layout">
+          {/* SIDEBAR (visible sur tous les écrans en haut, à gauche sur desktop) */}
+          <div className="sidebar">
+            <div className="header">
+              <div className="header-badge">Révision Brevet 3ème</div>
+              <h1>Prépare ton<br /><span>Brevet</span> 📖</h1>
+              <p>Questions générées par IA • Programme officiel</p>
             </div>
 
-            {/* Zone principale */}
-            <div className="desktop-main">
-              {screen === "home" && !subject && (
+            {screen === "home" && (
+              <>
+                <div className="section-title">Choisis une matière</div>
+                <SubjectGrid />
+
+                {/* Mode section visible sur mobile/tablette ici */}
+                <div className="hide-on-desktop">
+                  <ModeSection />
+                </div>
+              </>
+            )}
+
+            {screen !== "home" && (
+              <button className="btn btn-ghost" onClick={goHome}>← Retour à l'accueil</button>
+            )}
+          </div>
+
+          {/* CONTENU PRINCIPAL */}
+          <div className="main-content">
+            {screen === "home" && (
+              <>
+                {/* État vide sur desktop */}
                 <div className="desktop-empty">
                   <div style={{ fontSize: 56 }}>👈</div>
                   <div style={{ fontFamily: "Syne, sans-serif", fontSize: 20, fontWeight: 700 }}>Choisis une matière</div>
                   <div style={{ fontSize: 14, color: "rgba(255,255,255,0.4)" }}>dans le menu à gauche</div>
                 </div>
-              )}
-              {screen === "home" && subject && (
-                <>
-                  <div style={{ marginBottom: 20, padding: "24px", background: `${subject.color}15`, borderRadius: 18, border: `1.5px solid ${subject.color}40` }}>
-                    <div style={{ fontSize: 36 }}>{subject.icon}</div>
-                    <div style={{ fontFamily: "Syne, sans-serif", fontSize: 26, fontWeight: 800, marginTop: 10 }}>{subject.label}</div>
+
+                {/* Bannière matière + mode sur desktop */}
+                {subject && (
+                  <div className="show-on-desktop">
+                    <div className="desktop-subject-banner" style={{ background: `${subject.color}15`, border: `1.5px solid ${subject.color}40` }}>
+                      <div style={{ fontSize: 36 }}>{subject.icon}</div>
+                      <div style={{ fontFamily: "Syne, sans-serif", fontSize: 26, fontWeight: 800, marginTop: 10 }}>{subject.label}</div>
+                    </div>
+                    <div className="section-title">Mode de révision</div>
+                    <ModeSection />
                   </div>
-                  <div className="section-title">Mode de révision</div>
-                  <ModeSection />
-                </>
-              )}
-              {screen === "quiz" && <QuizMode subject={subject} onBack={goHome} />}
-              {screen === "long" && <LongMode subject={subject} onBack={goHome} />}
-            </div>
+                )}
+              </>
+            )}
+
+            {screen === "quiz" && <QuizMode subject={subject} onBack={goHome} />}
+            {screen === "long" && <LongMode subject={subject} onBack={goHome} />}
           </div>
-        )}
+        </div>
       </div>
     </>
   );
