@@ -80,12 +80,12 @@ const css = `
   body {
     font-family: 'DM Sans', sans-serif;
     background: #0F0E17;
-    min-height: 100vh;
+    min-height: 100vh; width: 100%;
     color: #FFFFFE;
   }
 
   .app {
-    min-height: 100vh;
+    min-height: 100vh; width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -612,14 +612,28 @@ const responsiveCss = `
 
   /* Ordinateur (≥ 1024px) */
   @media (min-width: 1024px) {
+    .app {
+      padding: 0;
+      align-items: stretch;
+    }
     .layout {
       display: grid;
-      grid-template-columns: 270px 1fr;
-      gap: 32px;
-      max-width: 1100px;
+      grid-template-columns: 300px 1fr;
+      gap: 0;
+      max-width: 100%;
       min-height: 100vh;
-      padding: 36px 32px;
+      width: 100%;
+      padding: 0;
       align-items: start;
+    }
+    .sidebar {
+      padding: 36px 28px;
+      border-right: 1px solid rgba(255,255,255,0.07);
+      background: rgba(255,255,255,0.02);
+      min-height: 100vh;
+    }
+    .main-content {
+      padding: 36px 40px;
     }
     .sidebar { position: sticky; top: 36px; }
     .sidebar .header { text-align: left; margin-bottom: 20px; }
