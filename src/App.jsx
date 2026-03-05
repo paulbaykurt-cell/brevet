@@ -588,94 +588,92 @@ function LongMode({ subject, onBack }) {
 // ── Main App ───────────────────────────────────────────────────────────────
 
 const responsiveCss = `
-  /* Layout de base (mobile) */
+  /* ── MOBILE (base) ── */
   .layout {
     width: 100%;
-    max-width: 680px;
     padding: 24px 16px 48px;
     position: relative;
     z-index: 1;
   }
+  .main-content { width: 100%; }
 
-  .subject-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    margin-bottom: 12px;
-  }
-
-  /* Tablette (≥ 640px) */
+  /* ── TABLETTE (≥ 640px) ── */
   @media (min-width: 640px) {
-    .layout { max-width: 800px; padding: 28px 24px 48px; }
-    .subject-grid { grid-template-columns: repeat(4, 1fr); }
+    .layout { max-width: 780px; margin: 0 auto; padding: 28px 24px 48px; }
+    .subject-grid { grid-template-columns: repeat(4, 1fr) !important; }
   }
 
-  /* Ordinateur (≥ 1024px) */
+  /* ── ORDINATEUR (≥ 1024px) ── */
   @media (min-width: 1024px) {
+    body, html { height: 100%; }
+
     .app {
-      padding: 0;
-      align-items: stretch;
+      padding: 0 !important;
+      align-items: stretch !important;
+      justify-content: stretch;
     }
+
     .layout {
-      display: grid;
-      grid-template-columns: 300px 1fr;
-      gap: 0;
-      max-width: 100%;
-      min-height: 100vh;
-      width: 100%;
-      padding: 0;
-      align-items: start;
+      display: grid !important;
+      grid-template-columns: 320px 1fr !important;
+      max-width: 100% !important;
+      width: 100% !important;
+      min-height: 100vh !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      gap: 0 !important;
+      align-items: start !important;
     }
+
     .sidebar {
-      padding: 36px 28px;
-      border-right: 1px solid rgba(255,255,255,0.07);
-      background: rgba(255,255,255,0.02);
+      padding: 40px 28px;
+      min-height: 100vh;
+      border-right: 1px solid rgba(255,255,255,0.08);
+      background: rgba(0,0,0,0.25);
+      position: sticky;
+      top: 0;
+    }
+
+    .sidebar .header { text-align: left; margin-bottom: 24px; }
+    .sidebar .header h1 { font-size: 30px; }
+
+    .main-content {
+      padding: 40px 48px;
       min-height: 100vh;
     }
-    .main-content {
-      padding: 36px 40px;
-    }
-    .sidebar { position: sticky; top: 36px; }
-    .sidebar .header { text-align: left; margin-bottom: 20px; }
-    .sidebar .header h1 { font-size: 28px; }
-    .main-content { min-width: 0; }
+
     .subject-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 8px !important;
     }
+
     .subject-card {
-      padding: 10px 12px;
-      border-radius: 12px;
-      flex-direction: row;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-align: left;
+      padding: 10px 12px !important;
+      border-radius: 12px !important;
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      text-align: left !important;
+      gap: 10px !important;
     }
-    .subject-icon { font-size: 20px; margin-bottom: 0; }
-    .subject-label { font-size: 12px; }
+
+    .subject-icon { font-size: 20px !important; margin-bottom: 0 !important; }
+    .subject-label { font-size: 12px !important; }
+
     .desktop-empty {
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 65vh;
+      height: 70vh;
       flex-direction: column;
       gap: 14px;
-      opacity: 0.35;
+      opacity: 0.3;
     }
-    .desktop-subject-banner {
-      display: block;
-      margin-bottom: 20px;
-      padding: 24px;
-      border-radius: 18px;
-    }
-    .hide-on-desktop { display: none; }
-    .show-on-desktop { display: block; }
+    .hide-on-desktop { display: none !important; }
+    .show-on-desktop { display: block !important; }
   }
 
   @media (max-width: 1023px) {
-    .sidebar { width: 100%; }
-    .main-content { width: 100%; }
     .desktop-empty { display: none; }
     .desktop-subject-banner { display: none; }
     .hide-on-desktop { display: block; }
